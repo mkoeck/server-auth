@@ -26,11 +26,11 @@
     <record id="view_vault_tree" model="ir.ui.view">
         <field name="model">vault</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="name" />
                 <field name="user_id" />
                 <field name="note" />
-            </tree>
+            </list>
         </field>
     </record>
 

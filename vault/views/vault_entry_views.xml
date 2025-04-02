@@ -3,23 +3,23 @@
     <record id="view_vault_entry_tree" model="ir.ui.view">
         <field name="model">vault.entry</field>
         <field name="arch" type="xml">
-            <tree decoration-muted="expired">
+            <list decoration-muted="expired">
                 <field name="expired" invisible="1" />
                 <field name="complete_name" />
                 <field name="tags" widget="many2many_tags" />
-            </tree>
+            </list>
         </field>
     </record>
 
     <record id="view_vault_entry_full_tree" model="ir.ui.view">
         <field name="model">vault.entry</field>
         <field name="arch" type="xml">
-            <tree decoration-muted="expired">
+            <list decoration-muted="expired">
                 <field name="expired" invisible="1" />
                 <field name="vault_id" />
                 <field name="complete_name" />
                 <field name="tags" widget="many2many_tags" />
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -80,7 +80,7 @@
                                 context="{'default_entry_id': active_id}"
                                 options="{'create': [('allowed_create', '=', True)], 'delete': [('allowed_delete', '=', True)], 'no_open': true}"
                             >
-                                <tree editable="bottom">
+                                <list editable="bottom">
                                     <field name="vault_id" invisible="1" />
                                     <field name="entry_id" invisible="1" />
                                     <field name="iv" invisible="1" />
@@ -92,7 +92,7 @@
                                         type="field_type"
                                     />
                                     <field name="write_date" />
-                                </tree>
+                                </list>
                             </field>
 
                             <label for="file_ids" />
@@ -101,7 +101,7 @@
                                 context="{'default_entry_id': active_id}"
                                 options="{'create': [('allowed_create', '=', True)], 'delete': [('allowed_delete', '=', True)], 'no_open': True}"
                             >
-                                <tree editable="bottom">
+                                <list editable="bottom">
                                     <field name="vault_id" invisible="1" />
                                     <field name="entry_id" invisible="1" />
                                     <field name="iv" invisible="1" />
@@ -113,7 +113,7 @@
                                         filename="name"
                                     />
                                     <field name="write_date" />
-                                </tree>
+                                </list>
                             </field>
                         </page>
                         <page string="Note">

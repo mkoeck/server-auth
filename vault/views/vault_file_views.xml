@@ -22,7 +22,7 @@
     <record id="view_vault_file_tree" model="ir.ui.view">
         <field name="model">vault.file</field>
         <field name="arch" type="xml">
-            <tree create="false" delete="false">
+            <list create="false" delete="false">
                 <field name="vault_id" invisible="1" />
                 <field name="entry_id" invisible="1" />
                 <field name="iv" invisible="1" />
@@ -30,7 +30,7 @@
                 <field name="name" invisible="1" />
                 <field name="value" widget="vault_file" filename="name" />
                 <field name="write_date" />
-            </tree>
+            </list>
         </field>
     </record>
 </odoo>
