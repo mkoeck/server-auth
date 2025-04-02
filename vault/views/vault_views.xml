@@ -55,13 +55,13 @@
                     <button
                         name="vault_reencrypt"
                         string="Re-encrypt"
-                        attrs="{'invisible': [('reencrypt_required', '=', True)]}"
+                        invisible="reencrypt_required"
                     />
                     <button
                         name="vault_reencrypt"
                         string="Re-encrypt"
                         class="oe_highlight"
-                        attrs="{'invisible': [('reencrypt_required', '=', False)]}"
+                        invisible="not reencrypt_required"
                     />
                 </header>
                 <sheet>
@@ -90,7 +90,7 @@
                     <notebook>
                         <page
                             string="Rights"
-                            attrs="{'invisible':[('allowed_share', '=', False)]}"
+                            invisible="not allowed_share"
                         >
                             <field
                                 name="right_ids"

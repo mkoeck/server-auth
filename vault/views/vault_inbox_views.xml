@@ -27,13 +27,13 @@
                         <field
                             name="secret"
                             widget="vault_inbox_field"
-                            attrs="{'invisible': [('secret', '=', False)]}"
+                            invisible="not secret"
                         />
                         <field
                             name="secret_file"
                             filename="filename"
                             widget="vault_inbox_file"
-                            attrs="{'invisible': [('secret_file', '=', False)]}"
+                            invisible="not secret_file"
                         />
                     </group>
 

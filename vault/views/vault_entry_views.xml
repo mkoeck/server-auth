@@ -54,7 +54,7 @@
                                 name="vault_id"
                                 invisible="1"
                                 force_save="1"
-                                attrs="{'readonly': [('vault_id', '!=', False)]}"
+                                readonly="vault_id"
                             />
                             <field
                                 name="parent_id"

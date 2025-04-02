@@ -17,7 +17,7 @@
                         />
                         <field
                             name="entry_id"
-                            attrs="{'invisible': [('vault_id', '=', False)]}"
+                            invisible="not vault_id"
                             options="{'no_create_edit': True, 'no_open': True, 'no_quick_create': true}"
                         />
                         <field name="name" />
