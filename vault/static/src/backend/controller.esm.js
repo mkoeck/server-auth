@@ -3,7 +3,7 @@
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import {AlertDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
-import Dialog from "web.Dialog";
+import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import {FormController} from "@web/views/form/form_controller";
 import Importer from "vault.import";
 import {ListController} from "@web/views/list/list_controller";
