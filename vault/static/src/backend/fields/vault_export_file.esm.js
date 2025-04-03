@@ -9,8 +9,13 @@ import {_t} from "@web/core/l10n/translation";
 import {downloadFile} from "@web/core/network/download";
 import {registry} from "@web/core/registry";
 import utils from "vault.utils";
+import {useService} from "@web/core/utils/hooks";
 
 export default class VaultExportFile extends VaultMixin(BinaryField) {
+    setup() {
+        super.setup(...arguments);
+        this.exporter = useService("vault.exporter");
+    }
     /**
      * Call the exporter and download the finalized file
      */
@@ -42,4 +47,17 @@ export default class VaultExportFile extends VaultMixin(BinaryField) {
 
 VaultExportFile.template = "vault.FileVaultExport";
 
-registry.category("fields").add("vault_export_file", VaultExportFile);
+function extractProps(attrs, field) {
+    return {
+        ...binaryField.extractProps(attrs, field),
+        fieldKey: attrs.key,
+        fieldIV: attrs.iv,
+    }
+}
+
+export const vaultExportFile = {
+    component: VaultExportFile,
+    extractProps,
+};
+
+registry.category("fields").add("vault_export_file", vaultExportFile);
