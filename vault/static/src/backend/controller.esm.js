@@ -14,7 +14,7 @@ import {useService} from "@web/core/utils/hooks";
 import utils from "vault.utils";
 import vault from "vault";
 
-patch(FormController.prototype, "vault", {
+patch(FormController.prototype, {
     /**
      * Re-encrypt the key if the user is getting selected
      *
