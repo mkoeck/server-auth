@@ -14,7 +14,7 @@
     <record id="action_open_entries" model="ir.actions.act_window">
         <field name="name">Entries</field>
         <field name="res_model">vault.entry</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="domain">[("vault_id", "=", active_id)]</field>
         <field name="context">{
             "default_vault_id": active_id,
@@ -94,7 +94,7 @@
                         >
                             <field
                                 name="right_ids"
-                                context="{'default_vault_id': active_id}"
+                                context="{'default_vault_id': id}"
                                 options="{'create': [('allowed_share', '=', True)], 'delete': [('allowed_share', '=', True)]}"
                             />
                         </page>
