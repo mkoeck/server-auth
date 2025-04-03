@@ -357,58 +357,51 @@ patch(FormController.prototype, {
      * Hook into the relevant functions
      */
     async create() {
-        const _super = this._super.bind(this);
         if (this.model.root.isDirty) await this._vaultAction();
 
-        const ret = await _super(...arguments);
+        const ret = await super.create(...arguments);
         return ret;
     },
 
     async onPagerUpdate() {
-        const _super = this._super.bind(this);
         if (this.model.root.isDirty) await this._vaultAction();
-        return await _super(...arguments);
+        return await super.onPagerUpdate(...arguments);
     },
 
     async saveButtonClicked() {
-        const _super = this._super.bind(this);
         if (this.model.root.isDirty) await this._vaultAction();
-        return await _super(...arguments);
+        return await super.saveButtonClicked(...arguments);
     },
 
     async discard() {
-        const _super = this._super.bind(this);
         if (this.model.root.resModel === "vault.entry")
             this.model.env.bus.trigger("RELATIONAL_MODEL:ENCRYPT_FIELDS");
-        return await _super(...arguments);
+        return await super.discard(...arguments);
     },
 
     async beforeLeave() {
-        const _super = this._super.bind(this);
         if (this.model.root.isDirty) await this._vaultAction();
-        return await _super(...arguments);
+        return await super.beforeLeave(...arguments);
     },
 
     async beforeUnload() {
-        const _super = this._super.bind(this);
         if (this.model.root.isDirty) await this._vaultAction();
-        return await _super(...arguments);
+        return await super.beforeUnload(...arguments);
     },
 
     async beforeExecuteActionButton(clickParams) {
-        const _super = this._super.bind(this);
         if (clickParams.special !== "cancel") {
             const _continue = await this._vaultAction(clickParams);
             if (!_continue) return false;
         }
 
-        return await _super(...arguments);
+        return await super.beforeExecuteActionButton(...arguments);
     },
 });
 
-patch(ListController.prototype, "vault", {
+patch(ListController.prototype, {
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         if (this.props.resModel === "vault" && !utils.supported())
             this.props.showButtons = false;
     },
