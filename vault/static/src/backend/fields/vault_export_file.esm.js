@@ -2,7 +2,7 @@
 // © 2021-2024 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import {BinaryField} from "@web/views/fields/binary/binary_field";
+import {BinaryField, binaryField} from "@web/views/fields/binary/binary_field";
 import Exporter from "vault.export";
 import VaultMixin from "vault.mixin";
 import {_t} from "@web/core/l10n/translation";
@@ -20,18 +20,17 @@ export default class VaultExportFile extends VaultMixin(BinaryField) {
      * Call the exporter and download the finalized file
      */
     async onFileDownload() {
-        if (!this.props.value) {
+        if (!this.props.record.data.content) {
             this.do_warn(
                 _t("Save As..."),
                 _t("The field is empty, there's nothing to save!")
             );
         } else if (utils.supported()) {
-            const exporter = new Exporter();
             const content = JSON.stringify(
                 await this.exporter.export(
                     await this._getMasterKey(),
-                    this.state.fileName,
-                    this.props.value
+                    this.fileName,
+                    this.props.record.data.content
                 )
             );
 
@@ -40,7 +39,7 @@ export default class VaultExportFile extends VaultMixin(BinaryField) {
             for (let i = 0; i < content.length; i++) arr[i] = content.charCodeAt(i);
 
             const blob = new Blob([arr]);
-            await downloadFile(blob, this.state.fileName || "");
+            await downloadFile(blob, this.fileName || "");
         }
     }
 }
