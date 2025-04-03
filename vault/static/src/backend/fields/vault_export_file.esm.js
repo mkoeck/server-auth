@@ -5,7 +5,7 @@
 import {BinaryField} from "@web/views/fields/binary/binary_field";
 import Exporter from "vault.export";
 import VaultMixin from "vault.mixin";
-import {_lt} from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 import {downloadFile} from "@web/core/network/download";
 import {registry} from "@web/core/registry";
 import utils from "vault.utils";
@@ -17,8 +17,8 @@ export default class VaultExportFile extends VaultMixin(BinaryField) {
     async onFileDownload() {
         if (!this.props.value) {
             this.do_warn(
-                _lt("Save As..."),
-                _lt("The field is empty, there's nothing to save!")
+                _t("Save As..."),
+                _t("The field is empty, there's nothing to save!")
             );
         } else if (utils.supported()) {
             const exporter = new Exporter();

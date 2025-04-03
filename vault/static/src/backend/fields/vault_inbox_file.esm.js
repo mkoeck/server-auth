@@ -4,7 +4,7 @@
 
 import VaultFile from "vault.file";
 import VaultInboxMixin from "vault.inbox.mixin";
-import {_lt} from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 import {registry} from "@web/core/registry";
 import utils from "vault.utils";
 import vault from "vault";
@@ -43,7 +43,7 @@ VaultInboxFile.defaultProps = {
     ...VaultFile.defaultProps,
     fieldKey: "key",
 };
-VaultInboxFile.displayName = _lt("Vault Inbox File");
+VaultInboxFile.displayName = _t("Vault Inbox File");
 VaultInboxFile.template = "vault.FileVaultInbox";
 
 registry.category("fields").add("vault_inbox_file", VaultInboxFile);

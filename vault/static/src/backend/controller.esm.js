@@ -7,8 +7,9 @@ import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_d
 import {FormController} from "@web/views/form/form_controller";
 import Importer from "vault.import";
 import {ListController} from "@web/views/list/list_controller";
-import {_lt} from "@web/core/l10n/translation";
-import framework from "web.framework";
+import {_t} from "@web/core/l10n/translation";
+import { rpc } from "@web/core/network/rpc";
+//import framework from "web.framework";
 import {patch} from "@web/core/utils/patch";
 import {useService} from "@web/core/utils/hooks";
 import utils from "vault.utils";
@@ -160,7 +161,7 @@ patch(FormController.prototype, {
                 if (val === null) {
                     problems.push(
                         _.str.sprintf(
-                            _lt("%s '%s' of entry '%s'"),
+                            _t("%s '%s' of entry '%s'"),
                             type,
                             rec.name,
                             rec.entry_name
@@ -293,8 +294,8 @@ patch(FormController.prototype, {
     async _vaultAction(button) {
         if (!utils.supported()) {
             await this.dialogService.add(AlertDialog, {
-                title: _lt("Vault is not supported"),
-                body: _lt(
+                title: _t("Vault is not supported"),
+                body: _t(
                     "A secure browser context is required. Please switch to " +
                         "https or contact your administrator"
                 ),

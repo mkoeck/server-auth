@@ -4,7 +4,7 @@
 
 import VaultField from "vault.field";
 import VaultInboxMixin from "vault.inbox.mixin";
-import {_lt} from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 import {registry} from "@web/core/registry";
 import utils from "vault.utils";
 import vault from "vault";

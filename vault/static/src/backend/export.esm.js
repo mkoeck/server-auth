@@ -2,7 +2,7 @@
 // © 2021-2024 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import {_lt} from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 import utils from "vault.utils";
 import {useService} from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";

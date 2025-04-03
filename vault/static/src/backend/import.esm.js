@@ -4,8 +4,8 @@
 
 /* global kdbxweb */
 
-import {_t} from "web.core";
-import framework from "web.framework";
+import {_t} from "@web/core/l10n/translation";
+//import framework from "web.framework";
 import utils from "vault.utils";
 import { AskPassDialog } from "./dialog/ask_pass_dialog/ask_pass_dialog";
 import { registry } from "@web/core/registry";

@@ -2,7 +2,7 @@
 // © 2021-2024 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import {_lt} from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 import {standardFieldProps} from "@web/views/fields/standard_field_props";
 import utils from "vault.utils";
 import vault from "vault";
@@ -80,7 +80,7 @@ export default (x) => {
             // Call the wizard to handle the user selection and storage
             this.action.doAction({
                 type: "ir.actions.act_window",
-                title: _lt("Send the secret to another user"),
+                title: _t("Send the secret to another user"),
                 target: "new",
                 res_model: "vault.send.wizard",
                 views: [[false, "form"]],

@@ -5,7 +5,7 @@
 import {Component, useEffect, useRef, useState} from "@odoo/owl";
 import {useBus, useService} from "@web/core/utils/hooks";
 import VaultMixin from "vault.mixin";
-import {_lt} from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 import {getActiveHotkey} from "@web/core/hotkeys/hotkey_service";
 import {registry} from "@web/core/registry";
 import utils from "vault.utils";
@@ -198,7 +198,7 @@ export default class VaultField extends VaultMixin(Component) {
     }
 }
 
-VaultField.displayName = _lt("Vault Field");
+VaultField.displayName = _t("Vault Field");
 VaultField.supportedTypes = ["char"];
 VaultField.template = "vault.FieldVault";
 

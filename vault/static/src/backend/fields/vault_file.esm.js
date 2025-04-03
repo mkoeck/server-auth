@@ -4,7 +4,7 @@
 
 import {BinaryField} from "@web/views/fields/binary/binary_field";
 import VaultMixin from "vault.mixin";
-import {_lt} from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 import {downloadFile} from "@web/core/network/download";
 import {registry} from "@web/core/registry";
 import {useService} from "@web/core/utils/hooks";
@@ -39,8 +39,8 @@ export default class VaultFile extends VaultMixin(BinaryField) {
     async onFileDownload() {
         if (!this.props.value) {
             this.do_warn(
-                _lt("Save As..."),
-                _lt("The field is empty, there's nothing to save!")
+                _t("Save As..."),
+                _t("The field is empty, there's nothing to save!")
             );
         } else if (utils.supported()) {
             const decrypted = await this._decrypt(this.props.value);
@@ -55,7 +55,7 @@ export default class VaultFile extends VaultMixin(BinaryField) {
     }
 }
 
-VaultFile.displayName = _lt("Vault File");
+VaultFile.displayName = _t("Vault File");
 VaultFile.template = "vault.FileVault";
 
 registry.category("fields").add("vault_file", VaultFile);

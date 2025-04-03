@@ -2,7 +2,7 @@
 // © 2021-2024 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import {_lt} from "@web/core/l10n/translation";
+import {_t} from "@web/core/l10n/translation";
 import {useService} from "@web/core/utils/hooks";
 import utils from "vault.utils";
 import vault from "vault";
@@ -30,7 +30,7 @@ export default (x) => {
 
             this.action.doAction({
                 type: "ir.actions.act_window",
-                title: _lt("Store the secret in a vault"),
+                title: _t("Store the secret in a vault"),
                 target: "new",
                 res_model: "vault.store.wizard",
                 views: [[false, "form"]],
