@@ -69,12 +69,12 @@ patch(FormController.prototype, {
      */
     async _newVaultKeyPair() {
         // Get the current private key
-        const private_key = await vault.get_private_key();
+        const private_key = await this.vault.get_private_key();
 
         // Generate new keys
-        await vault.generate_keys();
+        await this.vault.generate_keys();
 
-        const public_key = await vault.get_public_key();
+        const public_key = await this.vault.get_public_key();
 
         // Re-encrypt the master keys
         const master_keys = await this.rpc("/vault/rights/get");
@@ -134,11 +134,11 @@ patch(FormController.prototype, {
     async _reencryptVault(verify = false, force = false) {
         const record = this.model.root;
 
-        await vault._ensure_keys();
+        await this.vault._ensure_keys();
 
         const self = this;
         const master_key = await utils.generate_key();
-        const current_key = await vault.unwrap(record.data.master_key);
+        const current_key = await this.vault.unwrap(record.data.master_key);
 
         // This stores the additional changes made to rights, fields, and files
         const changes = [];
@@ -193,7 +193,7 @@ patch(FormController.prototype, {
             );
 
             for (const right of rights) {
-                const key = await vault.wrap_with(master_key, right.public_key);
+                const key = await this.vault.wrap_with(master_key, right.public_key);
 
                 changes.push({
                     id: right.id,
@@ -236,9 +236,8 @@ patch(FormController.prototype, {
 
         // Try to import the file on the fly and store the compatible JSON in the
         // crypted_content field for the python backend
-        const importer = new Importer();
-        const data = await importer.import(
-            await vault.unwrap(record.data.master_key),
+        const data = await this.importer.import(
+            await this.vault.unwrap(record.data.master_key),
             record.data.name,
             atob(record.data.content)
         );
@@ -262,7 +261,7 @@ patch(FormController.prototype, {
         if (!user || !user.public_key) throw new TypeError("User has no public key");
 
         await right.update({
-            key: await vault.share(root.data.master_key, user.public_key),
+            key: await this.vault.share(root.data.master_key, user.public_key),
         });
     },
 
@@ -277,7 +276,7 @@ patch(FormController.prototype, {
 
         if (!root.data.master_key)
             await root.update({
-                master_key: await vault.wrap(await utils.generate_key()),
+                master_key: await this.vault.wrap(await utils.generate_key()),
             });
 
         if (root.data.right_ids)

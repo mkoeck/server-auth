@@ -89,7 +89,7 @@ export default (x) => {
                     default_secret_file: enc_file,
                     default_filename: filename || false,
                     default_iv: iv,
-                    default_key: await vault.wrap(key),
+                    default_key: await this.vault.wrap(key),
                 },
             });
         }
@@ -131,15 +131,15 @@ export default (x) => {
             if (!utils.supported()) return null;
 
             // Check if the master key is already extracted
-            if (this.key) return await vault.unwrap(this.key);
+            if (this.key) return await this.vault.unwrap(this.key);
 
             // Get the wrapped master key from the field
             this.key = this.props.record.data[this.props.fieldKey];
-            if (this.key) return await vault.unwrap(this.key);
+            if (this.key) return await this.vault.unwrap(this.key);
 
             // Generate a new master key and write it to the field
             const key = await utils.generate_key();
-            this.key = await vault.wrap(key);
+            this.key = await this.vault.wrap(key);
             await this._setFieldValue(this.props.fieldKey, this.key);
             return key;
         }

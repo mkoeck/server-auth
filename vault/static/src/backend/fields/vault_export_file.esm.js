@@ -23,7 +23,7 @@ export default class VaultExportFile extends VaultMixin(BinaryField) {
         } else if (utils.supported()) {
             const exporter = new Exporter();
             const content = JSON.stringify(
-                await exporter.export(
+                await this.exporter.export(
                     await this._getMasterKey(),
                     this.state.fileName,
                     this.props.value
