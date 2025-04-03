@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="vault.AskPassDialog" owl="1">
+        <Dialog title="props.title" size="'md'">
+            <p t-if="props.body" class="mb-3" t-esc="props.body"/>
+            <div class="o_form_view">
+                 <form t-on-submit.prevent="_confirm">
+                     <table class="o_group o_inner_group">
+                         <tr t-if="props.password">
+                             <td class="o_td_label">
+                                 <label class="o_form_label" for="password_input">Password:</label>
+                             </td>
+                             <td>
+                                 <input type="password"
+                                        class="o_input"
+                                        t-model="state.password"
+                                        id="password_input"
+                                        t-ref="passwordInput"
+                                        autocomplete="current-password"/>
+                             </td>
+                         </tr>
+                         <tr t-if="props.password and props.confirm">
+                             <td class="o_td_label">
+                                 <label class="o_form_label" for="confirm_input">Confirm Password:</label>
+                             </td>
+                             <td>
+                                 <input type="password"
+                                        class="o_input"
+                                        t-model="state.confirm"
+                                        id="confirm_input"
+                                        autocomplete="new-password"/>
+                             </td>
+                         </tr>
+                         <tr t-if="props.keyfile">
+                            <td class="o_td_label">
+                                <label class="o_form_label" for="keyfile_input">Keyfile:</label>
+                            </td>
+                            <td>
+                                <input type="file"
+                                       class="o_input"
+                                       id="keyfile_input"
+                                       t-ref="keyfileInput"/>
+                            </td>
+                        </tr>
+                     </table>
+                 </form>
+             </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="_confirm">
+                <t t-esc="'Enter'"/>
+                </button>
+                <button class="btn btn-secondary" t-on-click="_cancel">
+                <t t-esc="'Cancel'"/>
+                </button>
+            </t>
+        </Dialog>
+    </t>
+</templates>

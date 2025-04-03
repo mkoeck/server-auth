@@ -110,15 +110,15 @@ patch(FormController.prototype, {
 
         var self = this;
 
-        Dialog.confirm(
-            self,
-            _lt("Do you really want to create a new key pair and set it active?"),
-            {
-                confirm_callback: function () {
+        this.dialogService.add(
+            ConfirmationDialog, {
+                'title': _t("Regenerate Key Pair"),
+                'body': _t("Do you really want to create a new key pair and set it active?"),
+                'confirm': function () {
                     return self._newVaultKeyPair();
-                },
+                }
             }
-        );
+        )
     },
 
     /**
@@ -208,8 +208,9 @@ patch(FormController.prototype, {
             if (problems.length && !force) {
                 framework.unblockUI();
 
-                Dialog.alert(self, "", {
-                    title: _lt("The following entries are broken:"),
+                this.dialogService.add(
+                    AlertDialog, {
+                        title: _t("The following entries are broken:"),
                     $content: $("<div/>").html(problems.join("<br>\n")),
                 });
             }
@@ -347,8 +348,9 @@ patch(FormController.prototype, {
             this.props.preventEdit = true;
         }
 
-        this._super(...arguments);
-        this.rpc = useService("rpc");
+        this.vault = useService("vault");
+        this.importer = useService("vault.importer");
+        super.setup(...arguments);
     },
 
     /**

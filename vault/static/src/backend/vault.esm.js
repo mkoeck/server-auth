@@ -6,6 +6,8 @@ import {_t} from "web.core";
 import ajax from "web.ajax";
 import {session} from "@web/session";
 import utils from "vault.utils";
+import { registry } from "@web/core/registry";
+import { AskPassDialog } from "./dialog/ask_pass_dialog/ask_pass_dialog";
 
 // Database name on the browser
 const Database = "vault";
@@ -46,7 +48,12 @@ class Vault {
      *
      * @override
      */
-    constructor() {
+    constructor(env, services) {
+        this.setup(env, services)
+    }
+
+    setup(env, services) {
+        this.dialog = services.dialog;
         const self = this;
 
         function waitAndCheck() {
@@ -285,6 +292,33 @@ class Vault {
     }
 
     /**
+     * Ask the user to enter a password using a dialog and put the password together
+     *
+     * @param {Boolean} confirm
+     * @returns password
+     */
+    async askpassword(confirm = false) {
+        const askpass = await new Promise((resolve) => {
+            this.dialog.add(AskPassDialog, {
+                title: _t("Unlock Vault Keys"),
+                body: _t("Please enter the password for your private key"),
+                confirm: confirm,
+                password: true,
+                keyfile: true,
+                onDone: (result) => {
+                    resolve(result);
+                },
+            });
+        });
+
+        let password = askpass.password || "";
+        if (askpass.keyfile)
+            password += await utils.digest(utils.toBinary(askpass.keyfile));
+
+        return password;
+    }
+
+    /**
      * Export the key pairs to the backends
      *
      * @private
@@ -300,9 +334,8 @@ class Vault {
         // Wrap the private key with the master key of the user
         this.iv = utils.generate_bytes(utils.IVLength);
 
-        // Request the password from the user and derive the user key
         const pass = await utils.derive_key(
-            password || (await askpassword(true)),
+            password || (await this.askpassword(true)),
             this.salt,
             this.iterations
         );
@@ -351,7 +384,7 @@ class Vault {
             this.version = params.version || 0;
 
             // Request the password from the user and derive the user key
-            const raw_password = await askpassword(false);
+            const raw_password = await this.askpassword(false);
             let password = raw_password;
 
             // Compatibility
@@ -423,4 +456,14 @@ class Vault {
     }
 }
 
-export default new Vault();
+export const vaultService = {
+    dependencies: ["dialog"],
+    start(env, services) {
+        const vault = new Vault(env, services);
+        return vault;
+    }
+}
+
+registry.category("services").add("vault", vaultService);
+
+//export default new Vault();

@@ -7,6 +7,9 @@
 import {_t} from "web.core";
 import framework from "web.framework";
 import utils from "vault.utils";
+import { AskPassDialog } from "./dialog/ask_pass_dialog/ask_pass_dialog";
+import { registry } from "@web/core/registry";
+import {useService} from "@web/core/utils/hooks";
 
 async function encrypted_field(master_key, name, value) {
     if (!value) return null;
@@ -34,6 +37,14 @@ async function encrypted_field(master_key, name, value) {
 //     List of encypted fields/files with `name`, `iv`, and `value`
 //
 export default class VaultImporter {
+    constructor(env, services) {
+        this.setup(env, services)
+    }
+
+    setup(env, services) {
+        this.dialog = services.dialog;
+    }
+
     /**
      * Encrypt a field of the above format properly for the backend to store.
      * The changes are done inplace.
@@ -81,9 +92,18 @@ export default class VaultImporter {
      * @returns the encrypted entry for the database
      */
     async _import_encrypted_json(master_key, content) {
-        const askpass = await utils.askpass(
-            _t("Please enter the password for the database")
-        );
+        const askpass = await new Promise((resolve) => {
+            this.dialog.add(AskPassDialog, {
+                title: _t("Unlock Database"),
+                body: _t("Please enter the password for the database"),
+                confirm: false,
+                password: true,
+                keyfile: true,
+                onDone: (result) => {
+                    resolve(result);
+                }
+            })
+        });
         let password = askpass.password || "";
         if (askpass.keyfile)
             password += await utils.digest(utils.toBinary(askpass.keyfile));
@@ -193,9 +213,18 @@ export default class VaultImporter {
      */
     async _import_kdbx(master_key, data) {
         // Get the credentials of the keepass database
-        const askpass = await utils.askpass(
-            _t("Please enter the password for the keepass database")
-        );
+        const askpass = await new Promise((resolve) => {
+            this.dialog.add(AskPassDialog, {
+                title: _t("Unlock Database"),
+                body: _t("Please enter the password for the database"),
+                confirm: false,
+                password: true,
+                keyfile: true,
+                onDone: (result) => {
+                    resolve(result);
+                }
+            })
+        });
 
         // TODO: challenge-response
         const credentials = new kdbxweb.Credentials(
@@ -242,3 +271,13 @@ export default class VaultImporter {
         return false;
     }
 }
+
+export const vaultImportService = {
+    dependencies: ["dialog"],
+    start(env, services) {
+        const vaultImporter = new VaultImporter(env, services);
+        return vaultImporter;
+    }
+}
+
+registry.category("services").add("vault.importer", vaultImportService);
