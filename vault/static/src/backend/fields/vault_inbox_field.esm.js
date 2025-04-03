@@ -43,7 +43,12 @@ VaultInboxField.defaultProps = {
     ...VaultField.defaultProps,
     fieldKey: "key",
 };
-VaultInboxField.displayName = _lt("Vault Inbox Field");
+VaultInboxField.displayName = _t("Vault Inbox Field");
 VaultInboxField.template = "vault.FieldVaultInbox";
 
-registry.category("fields").add("vault_inbox_field", VaultInboxField);
+export const vaultInboxField = {
+    component: VaultInboxField,
+    extractProps: VaultInboxField.extractProps,
+};
+
+registry.category("fields").add("vault_inbox_field", vaultInboxField);

@@ -58,4 +58,9 @@ export default class VaultFile extends VaultMixin(BinaryField) {
 VaultFile.displayName = _t("Vault File");
 VaultFile.template = "vault.FileVault";
 
-registry.category("fields").add("vault_file", VaultFile);
+export const vaultFile = {
+    component: VaultFile,
+    extractProps: VaultFile.extractProps,
+};
+
+registry.category("fields").add("vault_file", vaultFile);

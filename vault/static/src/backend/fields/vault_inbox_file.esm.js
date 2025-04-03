@@ -46,4 +46,9 @@ VaultInboxFile.defaultProps = {
 VaultInboxFile.displayName = _t("Vault Inbox File");
 VaultInboxFile.template = "vault.FileVaultInbox";
 
-registry.category("fields").add("vault_inbox_file", VaultInboxFile);
+export const vaultInboxFile = {
+    component: VaultInboxFile,
+    extractProps: VaultInboxFile.extractProps,
+};
+
+registry.category("fields").add("vault_inbox_file", vaultInboxFile);

@@ -6,9 +6,15 @@ import {_t} from "@web/core/l10n/translation";
 import {standardFieldProps} from "@web/views/fields/standard_field_props";
 import utils from "vault.utils";
 import vault from "vault";
+import {useService} from "@web/core/utils/hooks";
 
 export default (x) => {
     class Extended extends x {
+        setup() {    
+            this.vault = useService("vault");
+            super.setup(...arguments);
+        }
+
         supported() {
             return utils.supported();
         }
@@ -183,14 +189,6 @@ export default (x) => {
         ...x.props,
         fieldKey: {type: String, optional: true},
         fieldIV: {type: String, optional: true},
-    };
-    Extended.extractProps = ({attrs, field}) => {
-        const extract_props = x.extractProps || (() => ({}));
-        return {
-            ...extract_props({attrs, field}),
-            fieldKey: attrs.key,
-            fieldIV: attrs.iv,
-        };
     };
 
     return Extended;
