@@ -16,6 +16,7 @@
                             widget="vault_export_file"
                             filename="name"
                             readonly="1"
+                            options="{'accepted_file_extensions': '.json'}"
                         />
                         <field name="include_childs" />
                     </group>
