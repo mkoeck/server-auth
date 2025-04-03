@@ -77,7 +77,7 @@
                             <label for="field_ids" />
                             <field
                                 name="field_ids"
-                                context="{'default_entry_id': active_id}"
+                                context="{'default_entry_id': id}"
                                 options="{'create': [('allowed_create', '=', True)], 'delete': [('allowed_delete', '=', True)], 'no_open': true}"
                             >
                                 <list editable="bottom">
@@ -98,7 +98,7 @@
                             <label for="file_ids" />
                             <field
                                 name="file_ids"
-                                context="{'default_entry_id': active_id}"
+                                context="{'default_entry_id': id}"
                                 options="{'create': [('allowed_create', '=', True)], 'delete': [('allowed_delete', '=', True)], 'no_open': True}"
                             >
                                 <list editable="bottom">
@@ -122,7 +122,7 @@
                         <page string="Childs">
                             <field
                                 name="child_ids"
-                                context="{'default_parent_id': active_id, 'default_vault_id': vault_id}"
+                                context="{'default_parent_id': id, 'default_vault_id': vault_id}"
                             />
                         </page>
                         <page string="Log">
