@@ -75,7 +75,7 @@ class Vault {
      * @returns promise
      */
     rpc(url, params, options) {
-        return ajax.jsonRpc(url, "call", params, _.clone(options || {}));
+        return rpc(url, params, {...options});
     }
 
     /**

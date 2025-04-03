@@ -77,7 +77,7 @@ patch(FormController.prototype, {
         const public_key = await this.vault.get_public_key();
 
         // Re-encrypt the master keys
-        const master_keys = await this.rpc("/vault/rights/get");
+        const master_keys = await rpc("/vault/rights/get");
         let result = {};
         for (const uuid in master_keys) {
             result[uuid] = await utils.wrap(
@@ -86,10 +86,10 @@ patch(FormController.prototype, {
             );
         }
 
-        await this.rpc("/vault/rights/store", {keys: result});
+        await rpc("/vault/rights/store", {keys: result});
 
         // Re-encrypt the inboxes to not loose it
-        const inbox_keys = await this.rpc("/vault/inbox/get");
+        const inbox_keys = await rpc("/vault/inbox/get");
         result = {};
         for (const uuid in inbox_keys) {
             result[uuid] = await utils.wrap(
@@ -98,7 +98,7 @@ patch(FormController.prototype, {
             );
         }
 
-        await this.rpc("/vault/inbox/store", {keys: result});
+        await rpc("/vault/inbox/store", {keys: result});
     },
 
     /**
@@ -217,7 +217,7 @@ patch(FormController.prototype, {
             }
 
             if (!verify) {
-                await this.rpc("/vault/replace", {data: changes});
+                await rpc("/vault/replace", {data: changes});
                 await this.model.root.load();
             }
         } finally {
@@ -256,7 +256,7 @@ patch(FormController.prototype, {
         if (!root.data.master_key || right.data.key) return;
 
         const params = {user_id: right.data.user_id[0]};
-        const user = await this.rpc("/vault/public", params);
+        const user = await rpc("/vault/public", params);
 
         if (!user || !user.public_key) throw new TypeError("User has no public key");
 
