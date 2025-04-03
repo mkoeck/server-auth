@@ -27,8 +27,8 @@ patch(FormController.prototype, {
 
         if (!record.data.user_id || !record.data.public) return;
 
-        const key = await vault.unwrap(record.data.key);
-        await record.update({key_user: await vault.wrap_with(key, record.data.public)});
+        const key = await this.vault.unwrap(record.data.key);
+        await record.update({key_user: await this.vault.wrap_with(key, record.data.public)});
     },
 
     /**
@@ -49,13 +49,13 @@ patch(FormController.prototype, {
         )
             return;
 
-        const key = await vault.unwrap(record.data.key);
+        const key = await this.vault.unwrap(record.data.key);
         const secret = await utils.sym_decrypt(
             key,
             record.data.secret_temporary,
             record.data.iv
         );
-        const master_key = await vault.unwrap(record.data.master_key);
+        const master_key = await this.vault.unwrap(record.data.master_key);
 
         await record.update({
             secret: await utils.sym_encrypt(master_key, secret, record.data.iv),
