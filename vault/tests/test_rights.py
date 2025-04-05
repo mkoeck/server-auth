@@ -74,7 +74,7 @@ class TestAccessRights(TransactionCase):
 
         for obj in [self.field, self.entry, self.vault]:
             with self.assertRaises(AccessError):
-                obj.with_user(self.user).check_access_rule("create")
+                obj.with_user(self.user).check_access("create")
 
     def test_no_right(self):
         # No right defined for test user means access denied

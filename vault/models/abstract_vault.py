@@ -31,8 +31,11 @@ class AbstractVault(models.AbstractModel):
             )
         )
 
-    def check_access_rule(self, operation):
-        super().check_access_rule(operation)
+    def check_access(self, operation):
+        super().check_access(operation)
+
+        if not self:
+            return
 
         if self.env.su:
             return
