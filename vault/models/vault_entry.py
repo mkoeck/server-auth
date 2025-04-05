@@ -64,7 +64,7 @@ class VaultEntry(models.Model):
 
     @api.constrains("parent_id")
     def _check_parent_id(self):
-        if not self._check_recursion():
+        if self._has_cycle("parent_id"):
             raise ValidationError(_("You can not create recursive entries."))
 
     @api.depends("name", "parent_id.complete_name")
