@@ -87,7 +87,7 @@ class VaultEntry(models.Model):
             self.with_context(from_search_panel=True, entry_short_name=True),
         ).search_panel_select_range(field_name, **kwargs)
 
-    def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
+    def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None, **read_kwargs):
         """Changes related to searchpanel:
         - Add a domain to only show records with children.
         """
@@ -95,7 +95,7 @@ class VaultEntry(models.Model):
         if self.env.context.get("from_search_panel"):
             domain += [("child_ids", "!=", False)]
         return super().search_read(
-            domain=domain, fields=fields, offset=offset, limit=limit, order=order
+            domain=domain, fields=fields, offset=offset, limit=limit, order=order, **read_kwargs
         )
 
     def copy_data(self, default=None):
