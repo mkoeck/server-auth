@@ -54,11 +54,5 @@ export default (x) => {
         storeModel: {type: String, optional: true},
     };
 
-    Extended.extractProps = ({attrs}) => {
-        return {
-            storeModel: attrs.store,
-        };
-    };
-
     return Extended;
 };
