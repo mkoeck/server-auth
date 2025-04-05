@@ -3,12 +3,15 @@
 
 import json
 import logging
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 from odoo.tests import TransactionCase
 from odoo.tools import mute_logger
 
 from odoo.addons.website.tools import MockRequest
+from odoo.addons.vault.models.res_users_key import ResUsersKey
+from odoo.addons.vault.models.vault_inbox import VaultInbox
+from odoo.addons.vault.models.res_users import ResUsers
 
 from ..controllers import main
 
@@ -107,12 +110,9 @@ class TestController(TransactionCase):
                 raise TypeError()
 
             # Catch internal errors
-            try:
-                request_mock.httprequest.remote_addr = "127.0.0.1"
-                self.env["vault.inbox"]._patch_method("store_in_inbox", raise_error)
+            request_mock.httprequest.remote_addr = "127.0.0.1"
+            with patch.object(VaultInbox, 'store_in_inbox', raise_error):
                 response = load(self.controller.vault_inbox(self.user.inbox_token))
-            finally:
-                self.env["vault.inbox"]._revert_method("store_in_inbox")
 
             self.assertIn("error", response)
 
@@ -168,23 +168,17 @@ class TestController(TransactionCase):
     ):
         with MockRequest(self.env):
             mock = MagicMock()
-            try:
-                self.env["res.users.key"]._patch_method("store", mock)
+            with patch.object(ResUsersKey, 'store', mock):
                 self.controller.vault_store_keys()
                 mock.assert_called_once()
-            finally:
-                self.env["res.users.key"]._revert_method("store")
 
     @mute_logger("odoo.sql_db")
     def test_vault_keys_get(self):
         with MockRequest(self.env):
             mock = MagicMock()
-            try:
-                self.env["res.users"]._patch_method("get_vault_keys", mock)
+            with patch.object(ResUsers, 'get_vault_keys', mock):
                 self.controller.vault_get_keys()
                 mock.assert_called_once()
-            finally:
-                self.env["res.users"]._revert_method("get_vault_keys")
 
     @mute_logger("odoo.sql_db")
     def test_vault_right_keys(self):
