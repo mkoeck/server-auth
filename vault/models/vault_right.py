@@ -94,10 +94,10 @@ class VaultRight(models.Model):
         res.log_access()
         return res
 
-    def write(self, values):
-        res = super().write(values)
+    def write(self, vals):
+        res = super().write(vals)
         perms = ["perm_write", "perm_delete", "perm_share", "perm_create"]
-        if any(x in values for x in perms):
+        if any(x in vals for x in perms):
             self.log_access()
 
         return res

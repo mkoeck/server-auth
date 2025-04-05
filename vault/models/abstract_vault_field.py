@@ -52,6 +52,6 @@ class AbstractVaultField(models.AbstractModel):
         self.log_change("Deleted")
         return super().unlink()
 
-    def write(self, values):
+    def write(self, vals):
         self.log_change("Changed")
-        return super().write(values)
+        return super().write(vals)
