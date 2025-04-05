@@ -128,7 +128,7 @@ class Controller(http.Controller):
             if isinstance(master_key, str):
                 right.sudo().key = master_key
 
-    @http.route("/vault/replace", auth="user", type="json")
+    @http.route("/vault/replace", auth="user", type="json", readonly=True)
     def vault_replace(self, data):
         """Replace the master keys and values within a single transaction"""
         if not isinstance(data, list):
