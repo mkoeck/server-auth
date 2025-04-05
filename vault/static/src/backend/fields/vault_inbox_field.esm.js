@@ -3,6 +3,7 @@
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import VaultField from "vault.field";
+import vaultField from "vault.field";
 import VaultInboxMixin from "vault.inbox.mixin";
 import {_t} from "@web/core/l10n/translation";
 import {registry} from "@web/core/registry";
@@ -46,9 +47,16 @@ VaultInboxField.defaultProps = {
 VaultInboxField.displayName = _t("Vault Inbox Field");
 VaultInboxField.template = "vault.FieldVaultInbox";
 
+function extractProps(attrs, field) {
+    return {
+        ...vaultField.extractProps(attrs, field),
+        storeModel: attrs.store,
+    }
+}
+
 export const vaultInboxField = {
     component: VaultInboxField,
-    extractProps: VaultInboxField.extractProps,
+    extractProps
 };
 
 registry.category("fields").add("vault_inbox_field", vaultInboxField);

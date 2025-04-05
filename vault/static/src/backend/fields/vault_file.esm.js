@@ -2,7 +2,7 @@
 // © 2021-2024 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import {BinaryField} from "@web/views/fields/binary/binary_field";
+import {BinaryField, binaryField} from "@web/views/fields/binary/binary_field";
 import VaultMixin from "vault.mixin";
 import {_t} from "@web/core/l10n/translation";
 import {downloadFile} from "@web/core/network/download";
@@ -58,9 +58,17 @@ export default class VaultFile extends VaultMixin(BinaryField) {
 VaultFile.displayName = _t("Vault File");
 VaultFile.template = "vault.FileVault";
 
+function extractProps(attrs, field) {
+    return {
+        ...binaryField.extractProps(attrs, field),
+        fieldKey: attrs.key,
+        fieldIV: attrs.iv,
+    }
+}
+
 export const vaultFile = {
     component: VaultFile,
-    extractProps: VaultFile.extractProps,
+    extractProps,
 };
 
 registry.category("fields").add("vault_file", vaultFile);

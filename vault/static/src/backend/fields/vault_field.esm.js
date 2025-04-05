@@ -202,9 +202,16 @@ VaultField.displayName = _t("Vault Field");
 VaultField.supportedTypes = ["char"];
 VaultField.template = "vault.FieldVault";
 
+function extractProps(attrs, field) {
+    return {
+        fieldKey: attrs.key,
+        fieldIV: attrs.iv,
+    }
+}
+
 export const vaultField = {
     component: VaultField,
-    extractProps: VaultField.extractProps,
+    extractProps
 };
 
 registry.category("fields").add("vault_field", vaultField);

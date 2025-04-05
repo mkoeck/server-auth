@@ -3,6 +3,7 @@
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import VaultFile from "vault.file";
+import vaultFile from "vault.file";
 import VaultInboxMixin from "vault.inbox.mixin";
 import {_t} from "@web/core/l10n/translation";
 import {registry} from "@web/core/registry";
@@ -46,9 +47,16 @@ VaultInboxFile.defaultProps = {
 VaultInboxFile.displayName = _t("Vault Inbox File");
 VaultInboxFile.template = "vault.FileVaultInbox";
 
+function extractProps(attrs, field) {
+    return {
+        ...vaultFile.extractProps(attrs, field),
+        storeModel: attrs.store,
+    }
+}
+
 export const vaultInboxFile = {
     component: VaultInboxFile,
-    extractProps: VaultInboxFile.extractProps,
+    extractProps
 };
 
 registry.category("fields").add("vault_inbox_file", vaultInboxFile);
