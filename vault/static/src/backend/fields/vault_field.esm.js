@@ -4,17 +4,19 @@
 
 import {Component, useEffect, useRef, useState} from "@odoo/owl";
 import {useBus, useService} from "@web/core/utils/hooks";
+import { GeneratePassDialog } from "@vault/backend/dialog/generate_pass_dialog/generate_pass_dialog";
 import VaultMixin from "vault.mixin";
 import {_t} from "@web/core/l10n/translation";
 import {getActiveHotkey} from "@web/core/hotkeys/hotkey_service";
 import {registry} from "@web/core/registry";
 import utils from "vault.utils";
 
-export default class VaultField extends VaultMixin(Component) {
+export class VaultField extends VaultMixin(Component) {
     setup() {
         super.setup();
 
         this.action = useService("action");
+        this.dialog = useService("dialog");
         this.input = useRef("input");
         this.span = useRef("span");
         this.state = useState({
@@ -44,7 +46,7 @@ export default class VaultField extends VaultMixin(Component) {
 
         useEffect(() => {
             const isInvalid = self.props.record
-                ? self.props.record.isInvalid(self.props.name)
+                ? self.props.record.isFieldInvalid(self.props.name)
                 : false;
 
             if (self.input.el && !self.state.isDirty && !isInvalid) {
@@ -79,7 +81,12 @@ export default class VaultField extends VaultMixin(Component) {
     async _onGenerateValue(ev) {
         ev.stopPropagation();
 
-        const password = await utils.generate_pass();
+        const password = await new Promise((resolve, reject) => {
+                    this.dialog.add(GeneratePassDialog, {
+                        confirm: (password) => resolve(password),
+                        cancel: (reason) => reject(reason || _t("Cancelled")),
+                    })
+                });
         await this.storeValue(password);
     }
 
@@ -93,7 +100,7 @@ export default class VaultField extends VaultMixin(Component) {
 
         this.state.decrypted = !this.state.decrypted;
         if (this.state.decrypted) {
-            this.state.decryptedValue = await this._decrypt(this.props.value);
+            this.state.decryptedValue = await this._decrypt(this.props.record.data.value);
         } else {
             this.state.decryptedValue = "";
         }
@@ -109,7 +116,7 @@ export default class VaultField extends VaultMixin(Component) {
     async _onCopyValue(ev) {
         ev.stopPropagation();
 
-        const value = await this._decrypt(this.props.value);
+        const value = await this._decrypt(this.props.record.data.value);
         await navigator.clipboard.writeText(value);
     }
 
@@ -121,7 +128,7 @@ export default class VaultField extends VaultMixin(Component) {
     async _onSendValue(ev) {
         ev.stopPropagation();
 
-        await this.sendValue(this.props.value, "");
+        await this.sendValue(this.props.record.data.value, "");
     }
 
     /**
@@ -130,7 +137,7 @@ export default class VaultField extends VaultMixin(Component) {
      * @returns the decrypted value or a placeholder
      */
     get formattedValue() {
-        if (!this.props.value) return "";
+        if (!this.props.record.data.value) return "";
         if (this.state.decrypted) return this.state.decryptedValue || "*******";
         return "*******";
     }
@@ -141,7 +148,7 @@ export default class VaultField extends VaultMixin(Component) {
      * @returns decrypted value
      */
     async getValue() {
-        return await this._decrypt(this.props.value);
+        return await this._decrypt(this.props.record.data.value);
     }
 
     /**

@@ -160,12 +160,7 @@ patch(FormController.prototype, {
                 const val = await utils.sym_decrypt(current_key, rec.value, rec.iv);
                 if (val === null) {
                     problems.push(
-                        _.str.sprintf(
-                            _t("%s '%s' of entry '%s'"),
-                            type,
-                            rec.name,
-                            rec.entry_name
-                        )
+                        _t(`${type} '${rec.name}' of entry '${rec.entry_name}'`)
                     );
                     continue;
                 }
@@ -182,7 +177,7 @@ patch(FormController.prototype, {
             }
         }
 
-        framework.blockUI();
+        //framework.blockUI();
         try {
             // Update the rights. Load without limit
             const rights = await self.model.orm.searchRead(
@@ -207,7 +202,7 @@ patch(FormController.prototype, {
             await reencrypt("vault.file", "File");
 
             if (problems.length && !force) {
-                framework.unblockUI();
+                //framework.unblockUI();
 
                 this.dialogService.add(
                     AlertDialog, {
@@ -221,7 +216,7 @@ patch(FormController.prototype, {
                 await this.model.root.load();
             }
         } finally {
-            framework.unblockUI();
+            //framework.unblockUI();
         }
     },
 

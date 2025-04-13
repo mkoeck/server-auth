@@ -7,7 +7,7 @@ import { rpc } from "@web/core/network/rpc";
 import {session} from "@web/session";
 import utils from "vault.utils";
 import { registry } from "@web/core/registry";
-import { AskPassDialog } from "./dialog/ask_pass_dialog/ask_pass_dialog";
+import { AskPassDialog } from "@vault/backend/dialog/ask_pass_dialog/ask_pass_dialog";
 
 // Database name on the browser
 const Database = "vault";
@@ -21,25 +21,6 @@ const indexedDB =
 
 // Expiration time of the vault store entries
 const Expiration = 15 * 60 * 1000;
-
-/**
- * Ask the user to enter a password using a dialog and put the password together
- *
- * @param {Boolean} confirm
- * @returns password
- */
-async function askpassword(confirm = false) {
-    const askpass = await utils.askpass(
-        _t("Please enter the password for your private key"),
-        {confirm: confirm}
-    );
-
-    let password = askpass.password || "";
-    if (askpass.keyfile)
-        password += await utils.digest(utils.toBinary(askpass.keyfile));
-
-    return password;
-}
 
 // Vault implementation
 class Vault {

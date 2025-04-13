@@ -2,10 +2,6 @@
 // © 2021-2024 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import {_t} from "@web/core/l10n/translation";
-import { renderToElement } from "@web/core/utils/render";
-import { Dialog } from "@web/core/dialog/dialog";
-
 const CryptoAPI = window.crypto.subtle;
 
 // Some basic constants used for the entire vaults
@@ -169,142 +165,6 @@ async function generate_key_pair() {
 async function digest(data) {
     const encoder = new TextEncoder();
     return toBase64(await CryptoAPI.digest(Hash, encoder.encode(data)));
-}
-
-/**
- * Ask the user to enter a password using a dialog
- *
- * @param {String} title of the dialog
- * @param {Object} options
- * @returns promise
- */
-function askpass(title, options = {}) {
-    var self = this;
-
-    if (options.password === undefined) options.password = true;
-    if (options.keyfile === undefined) options.keyfile = true;
-
-    return new Promise((resolve, reject) => {
-        var dialog = new Dialog(self, {
-            title: title,
-            $content: $(qweb.render("vault.askpass", options)),
-            buttons: [
-                {
-                    text: _t("Enter"),
-                    classes: "btn-primary",
-                    click: async function (ev) {
-                        ev.stopPropagation();
-                        const password = this.$("#password").val();
-                        const keyfile = this.$("#keyfile")[0].files[0];
-
-                        if (!password && !keyfile) {
-                            Dialog.alert(this, _t("Missing password"));
-                            return;
-                        }
-
-                        if (options.confirm) {
-                            const confirm = this.$("#confirm").val();
-
-                            if (confirm !== password) {
-                                Dialog.alert(this, _t("The passwords aren't matching"));
-                                return;
-                            }
-                        }
-
-                        dialog.close();
-
-                        let keyfile_content = null;
-                        if (keyfile) keyfile_content = fromBinary(await keyfile.text());
-
-                        resolve({
-                            password: password,
-                            keyfile: keyfile_content,
-                        });
-                    },
-                },
-                {
-                    text: _t("Cancel"),
-                    click: function (ev) {
-                        ev.stopPropagation();
-                        dialog.close();
-                        reject(_t("Cancelled"));
-                    },
-                },
-            ],
-        });
-
-        dialog.open();
-    });
-}
-
-/**
- * Ask the user to enter a password using a dialog
- *
- * @param {String} title of the dialog
- * @param {Object} options
- * @returns promise
- */
-function generate_pass(title, options = {}) {
-    var self = this;
-
-    const $content = $(qweb.render("vault.generate_pass", options));
-    const $password = $content.find("#password")[0];
-    const $length = $content.find("#length")[0];
-    const $big = $content.find("#big_letter")[0];
-    const $small = $content.find("#small_letter")[0];
-    const $digits = $content.find("#digits")[0];
-    const $special = $content.find("#special")[0];
-    var password = null;
-
-    function gen_pass() {
-        let characters = "";
-        if ($big.checked) characters += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        if ($small.checked) characters += "abcdefghijklmnopqrstuvwxyz";
-        if ($digits.checked) characters += "0123456789";
-        if ($special.checked) characters += "!?$%&/()[]{}|<>,;.:-_#+*\\";
-
-        if (characters)
-            $password.innerHTML = password = generate_secret($length.value, characters);
-    }
-
-    $length.onchange =
-        $big.onchange =
-        $small.onchange =
-        $digits.onchange =
-        $special.onchange =
-            gen_pass;
-
-    gen_pass();
-
-    return new Promise((resolve, reject) => {
-        var dialog = new Dialog(self, {
-            title: title,
-            $content: $content,
-            buttons: [
-                {
-                    text: _t("Enter"),
-                    classes: "btn-primary",
-                    click: async function (ev) {
-                        ev.stopPropagation();
-                        if (!password) throw new Error(_t("Missing password"));
-
-                        dialog.close();
-                        resolve(password);
-                    },
-                },
-                {
-                    text: _t("Cancel"),
-                    click: function (ev) {
-                        ev.stopPropagation();
-                        dialog.close();
-                        reject(_t("Cancelled"));
-                    },
-                },
-            ],
-        });
-
-        dialog.open();
-    });
 }
 
 /**
@@ -546,7 +406,6 @@ export default {
     Symmetric: Symmetric,
 
     // Crypto utility functions
-    askpass: askpass,
     asym_decrypt: asym_decrypt,
     asym_encrypt: asym_encrypt,
     derive_key: derive_key,
@@ -557,7 +416,6 @@ export default {
     generate_iv_base64: generate_iv_base64,
     generate_key: generate_key,
     generate_key_pair: generate_key_pair,
-    generate_pass: generate_pass,
     generate_secret: generate_secret,
     load_private_key: load_private_key,
     load_public_key: load_public_key,

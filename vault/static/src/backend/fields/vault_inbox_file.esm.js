@@ -3,12 +3,13 @@
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import VaultFile from "vault.file";
-import vaultFile from "vault.file";
 import VaultInboxMixin from "vault.inbox.mixin";
 import {_t} from "@web/core/l10n/translation";
 import {registry} from "@web/core/registry";
 import utils from "vault.utils";
 import vault from "vault";
+
+const vaultFile = registry.category("fields").get("vault_file");
 
 export default class VaultInboxFile extends VaultInboxMixin(VaultFile) {
     /**
@@ -17,7 +18,7 @@ export default class VaultInboxFile extends VaultInboxMixin(VaultFile) {
      * @private
      */
     async _onSaveValue() {
-        await this.saveValue("vault.file", this.props.value, this.state.fileName);
+        await this.saveValue("vault.file", this.props.record.data.value, this.state.fileName);
     }
 
     /**

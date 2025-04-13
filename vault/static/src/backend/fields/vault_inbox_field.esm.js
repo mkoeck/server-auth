@@ -2,13 +2,14 @@
 // © 2021-2024 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import VaultField from "vault.field";
-import vaultField from "vault.field";
+import VaultField from "vault.file"
 import VaultInboxMixin from "vault.inbox.mixin";
 import {_t} from "@web/core/l10n/translation";
 import {registry} from "@web/core/registry";
 import utils from "vault.utils";
 import vault from "vault";
+
+const vaultField = registry.category("fields").get("vault_field");
 
 export default class VaultInboxField extends VaultInboxMixin(VaultField) {
     /**
@@ -17,7 +18,7 @@ export default class VaultInboxField extends VaultInboxMixin(VaultField) {
      * @private
      */
     async _onSaveValue() {
-        await this.saveValue("vault.field", this.props.value);
+        await this.saveValue("vault.field", this.props.record.data.value);
     }
 
     /**

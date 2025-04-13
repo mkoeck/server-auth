@@ -7,7 +7,7 @@
 import {_t} from "@web/core/l10n/translation";
 //import framework from "web.framework";
 import utils from "vault.utils";
-import { AskPassDialog } from "./dialog/ask_pass_dialog/ask_pass_dialog";
+import { AskPassDialog } from "@vault/backend/dialog/ask_pass_dialog/ask_pass_dialog";
 import { registry } from "@web/core/registry";
 import {useService} from "@web/core/utils/hooks";
 
@@ -241,13 +241,13 @@ export default class VaultImporter {
 
         try {
             // Unwrap the master key, format, and encrypt the database
-            framework.blockUI();
+            //framework.blockUI();
             const result = [];
             for (const group of db.groups)
                 result.push(await this._import_kdbx_group(master_key, group));
             return result;
         } finally {
-            framework.unblockUI();
+            //framework.unblockUI();
         }
     }
 

@@ -21,16 +21,16 @@ export default (x) => {
 
         // Control the visibility of the buttons
         get showButton() {
-            return this.props.value;
+            return this.props.record.data.value;
         }
         get copyButton() {
-            return this.props.value;
+            return this.props.record.data.value;
         }
         get sendButton() {
-            return this.props.value;
+            return this.props.record.data.value;
         }
         get saveButton() {
-            return this.props.value;
+            return this.props.record.data.value;
         }
         get generateButton() {
             return true;
@@ -49,7 +49,7 @@ export default (x) => {
             if (!utils.supported()) return;
 
             const encrypted = await this._encrypt(value);
-            await this.props.update(encrypted, options);
+            await this.props.record.update({ [this.props.name]: encrypted });
         }
 
         /**

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="vault.GeneratePassDialog" owl="1">
+        <Dialog title="props.title" size="'md'">
+            <div class="o_form_view">
+                <form t-on-submit.prevent="_confirm">
+                    <table class="o_group o_inner_group">
+                        <tr class="align-items-center mb-2">
+                            <td class="o_td_label">
+                                <label class="o_form_label fw-bold">Password:</label>
+                            </td>
+                            <td>
+                                <span class="text-monospace bg-light p-1 d-block" t-esc="state.generatedPassword"/>
+                            </td>
+                        </tr>
+                        <tr class="align-items-center mb-2">
+                            <td class="o_td_label">
+                                <label class="o_form_label fw-bold" for="gen_pass_length">Length:</label>
+                            </td>
+                            <td class="d-flex align-items-center">
+                                <input
+                                    type="range"
+                                    id="gen_pass_length"
+                                    min="8"
+                                    max="64"
+                                    class="form-range flex-grow-1 me-2"
+                                    t-att-value="state.length"
+                                    t-on-input="onLengthChange"
+                                />
+                                <span class="badge bg-secondary" t-esc="state.length"/>
+                            </td>
+                        </tr>
+                        <tr class="align-items-center mb-2">
+                            <td class="o_td_label align-self-start">
+                                <label class="o_form_label fw-bold">Characters:</label>
+                            </td>
+                            <td>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="gen_pass_big" name="big_letter" t-att-checked="state.useBig" t-on-change="onCheckboxChange"/>
+                                    <label class="form-check-label" for="gen_pass_big">A-Z</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="gen_pass_small" name="small_letter" t-att-checked="state.useSmall" t-on-change="onCheckboxChange"/>
+                                    <label class="form-check-label" for="gen_pass_small">a-z</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="gen_pass_digits" name="digits" t-att-checked="state.useDigits" t-on-change="onCheckboxChange"/>
+                                    <label class="form-check-label" for="gen_pass_digits">0-9</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="gen_pass_special" name="special" t-att-checked="state.useSpecial" t-on-change="onCheckboxChange"/>
+                                    <label class="form-check-label" for="gen_pass_special">Special (!?$%...)</label>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="_onConfirm">
+                    <t t-esc="'Generate'" />
+                </button>
+                <button class="btn btn-secondary" t-on-click="_onCancel">
+                    <t t-esc="'Cancel'" />
+                </button>
+            </t>
+        </Dialog>
+    </t>
+</templates>
